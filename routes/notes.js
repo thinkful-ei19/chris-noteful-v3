@@ -37,13 +37,8 @@ router.get('/notes', (req, res, next) => {
 /* ========== GET/READ A SINGLE ITEM ========== */
 router.get('/notes/:id', (req, res, next) => {
 
-  if(!mongoose.Types.ObjectId.isValid(id)) {
-    const error = new Error(`The ${id} is invalid`);
-    error.status = 400;
-    return next(err);
-  }
-
   const searchId = req.params.id;
+
   Note.findById(searchId)
     .then(results => {
         res.json(results);
