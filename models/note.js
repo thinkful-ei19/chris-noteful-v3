@@ -1,10 +1,18 @@
 const mongoose = require('mongoose');
 
 const noteSchema = new mongoose.Schema({
-    title: {type: String, required: true },
-    content: { type: String, required: true },
+    title: {type: String, index: true },
+    content: { type: String, index: true },
     created: { type: Date, default: Date.now() }
 });
+
+noteSchema.set('toObject', {
+    transform: function (doc, ret) {
+      ret.id = ret._id;
+      delete ret._id;
+      delete ret.__v;
+    }
+  });
 
 noteSchema.index({ title: 'text', content: 'text' })
 
