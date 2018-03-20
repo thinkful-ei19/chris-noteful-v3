@@ -13,9 +13,18 @@ router.get('/notes', (req, res, next) => {
 
       const { searchTerm } = req.query;
       let filter = {};
-
+      console.log(searchTerm);
       if (searchTerm) {
         const re = new RegExp(searchTerm, 'i');
+        // Note.find({
+        //   title: { $regex: searchTerm },
+        //   content: { $regex: searchTerm }
+        // })
+        // .exec(function(err, results) {
+        //   if (err) return console.error(err);
+        //   console.log(results);
+        //   res.send(results);
+        // })
         filter.title = { $regex:re }; 
       }
       Note.find(filter)
@@ -39,12 +48,22 @@ router.get('/notes/:id', (req, res, next) => {
 
   const searchId = req.params.id;
 
+  // if (!mongoose.Types.ObjectId.isValid(id)) {
+  //   const err = new Error('The `id` is not valid');
+  //   err.status = 400;
+  //   console.log(err);
+  // }
+
   Note.findById(searchId)
     .then(results => {
-        res.json(results);
-        console.log('FindById done')
+        if (!results) {
+          console.log(`testing`)
+          res.json(`Cannot find ${searchId}`)
+        } else {
+          res.json(results);
+        }
     })
-    .catch(console.error);
+    .catch(console.log(err));
 
   // console.log('Get a Note');
   // res.json({ id: 2 });
