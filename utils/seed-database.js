@@ -20,7 +20,7 @@ mongoose.connect(MONGODB_URI)
   .then(() => mongoose.connection.db.dropDatabase())
   .then(() => Note.insertMany(seedNotes))
   .then(() => Note.createIndexes())
-  .then(results => {
+  .then(() => {
     console.info(`Inserted Notes`);
   })
   .then(() => mongoose.disconnect())

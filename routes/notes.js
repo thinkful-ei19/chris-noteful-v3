@@ -48,22 +48,22 @@ router.get('/notes/:id', (req, res, next) => {
 
   const searchId = req.params.id;
 
-  // if (!mongoose.Types.ObjectId.isValid(id)) {
-  //   const err = new Error('The `id` is not valid');
-  //   err.status = 400;
-  //   console.log(err);
-  // }
+  if (!mongoose.Types.ObjectId.isValid(searchId)) {
+    const err = new Error('The `id` is not valid');
+    err.status = 400;
+    console.log(err);
+  }
 
   Note.findById(searchId)
     .then(results => {
-        if (!results) {
-          console.log(`testing`)
-          res.json(`Cannot find ${searchId}`)
-        } else {
+        if (results) {
           res.json(results);
+        } else {
+          console.log(`testing`)
+          next();
         }
     })
-    .catch(console.log(err));
+    .catch(next);
 
   // console.log('Get a Note');
   // res.json({ id: 2 });
